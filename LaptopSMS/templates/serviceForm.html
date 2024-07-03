@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% block title %}Service Form{% endblock title %}
+
+{% block body %}
+<section class="service-form">
+    <div class="container-fluid p-5">
+        <div class="row">
+            <div class="col-lg-12">
+                <p class="text-center h1 fw-bold mb-4 mx-1 mx-md-4 mt-4">Service Form</p>
+            </div>
+        </div>
+        <div class="container-fluid border Larger shadow rounded-5 p-4">
+            <form action="{% url 'service' pid=product.id %}" method="post">
+                {% csrf_token %}
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div data-mdb-input-init class="form-outline flex-fill mb-5">
+                            <input type="text" id="serviceId" class="form-control" value="Auto Generated" disabled/>
+                            <label class="form-label" for="serviceId">Service ID</label>
+                        </div>
+                        <div data-mdb-input-init class="form-outline flex-fill mb-5">
+                            <input type="text" id="inwardId" class="form-control" disabled value="{{product.id}}"/>
+                            <label class="form-label" for="inwardId">Inward ID</label>
+                        </div>
+                        <div data-mdb-input-init class="form-outline flex-fill mb-5">
+                            <input type="text" id="brand" class="form-control" disabled value="{{product.brand}}"/>
+                            <label class="form-label" for="brand">Brand</label>
+                        </div>
+                        <div data-mdb-input-init class="form-outline flex-fill mb-5">
+                            <input type="text" id="model" class="form-control" disabled value="{{product.model}}"/>
+                            <label class="form-label" for="model">Model</label>
+                        </div>
+                        <div data-mdb-input-init class="form-outline flex-fill mb-5">
+                            <input type="text" id="serialNo" class="form-control" disabled value="{{product.serialNo}}"/>
+                            <label class="form-label" for="serialNo">Product Serial No.</label>
+                        </div>
+                        <div data-mdb-input-init class="form-outline flex-fill mb-5">
+                            <textarea class="form-control" id="remarks" rows="3" name="problem">{{product.problem}}</textarea>
+                            <label class="form-label" for="productModel">Problem</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div data-mdb-input-init class="form-outline flex-fill mb-5">
+                            <textarea class="form-control" id="remarks" rows="3" name="remark">{{product.remark}}</textarea>
+                            <label class="form-label" for="productModel">Remark</label>
+                        </div>
+                        <div data-mdb-input-init class="form-outline flex-fill mb-5">
+                            <input type="date" id="dateOfInward" class="form-control" disabled value="{{product.commitmentDate|date:'Y-m-d' }}"/>
+                            <label class="form-label" for="dateOfInward">Date of Inward</label>
+                        </div>  
+                        <div data-mdb-input-init class="form-outline flex-fill mb-5">
+                            <input type="text" id="componentsUsed" class="form-control" name="component" value="{{ service.component }}"/>
+                            <label class="form-label" for="componentsUsed">Components Used</label>
+                        </div>
+                        <div data-mdb-input-init class="form-outline flex-fill mb-5">
+                            <input type="text" id="serviceRemark" class="form-control" name="serviceRemark" value="{{ service.serviceRemark }}"/>
+                            <label class="form-label" for="serviceRemark">Service Remark</label>
+                        </div>
+                        <div data-mdb-input-init class="form-outline flex-fill mb-5">
+                            <input type="number" id="serviceRemark" class="form-control" name="serviceCost" value="{{ service.serviceCost }}"/>
+                            <label class="form-label" for="serviceRemark">Service Cost (INR)</label>
+                        </div>
+                        <div data-mdb-input-init class="form-outline flex-fill mb-2">
+                            <label class="form-label" for="serviceTechnician">Service Technician</label>
+                            <select id="serviceTechnician" class="form-select" name="serviceTechnician">
+                                <option value="" selected disabled>Select Service Technician</option>
+                                {% for technician in technicians %}
+                                <option value="{{ technician.id }}" {% if service and service.serviceTechnician and service.serviceTechnician.id == technician.id %}selected{% endif %}> {{ technician.empName }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>                        
+                        <div data-mdb-input-init class="form-outline flex-fill mb-5">
+                            <label class="form-label" for="serviceTechnician">Service Status</label>
+                            <select id="status" class="form-select" name="serviceStatus">
+                                <option value="" disabled selected>Select status</option>
+                                <option value="Service Done">Service Done</option>
+                                <option value="Service Pending">Service Pending</option>
+                                <option value="Components Not available">Components Not available</option>
+                            </select>
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock body %}

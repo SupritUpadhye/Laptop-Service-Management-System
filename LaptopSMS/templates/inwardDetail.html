@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% block title %}Product Inward{% endblock title %}
+
+{% block body %}
+<section class="inward-sts">
+    <div class="container-fluid p-5">
+        <p class="text-center h1 fw-bold mb-4 mx-1 mx-md-4 mt-4">Product Inward</p>
+        <div class="container-fluid border shadow rounded-5 p-4">
+            <div class="row">
+                <div class="col-lg-5">
+                    <p class="text-center h4 fw-bold mb-4 mx-1 mx-md-4 mt-4">Product Inward Details</p>
+                    <div class="d-flex flex-row align-items-center mb-4">
+                        <i class="fa-solid fa-gears fa-lg me-3 fa-fw"></i>
+                        <div class="flex-fill mb-0">
+                            <p><strong>Product Serial Number:</strong> <span class="box-content">{{ product.serialNo }}</span></p>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-row align-items-center mb-4">
+                        <i class="fa-solid fa-laptop fa-lg me-3 fa-fw"></i>
+                        <div class="flex-fill mb-0">
+                            <p><strong>Brand:</strong> <span class="box-content">{{ product.brand }}</span></p>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-row align-items-center mb-4">
+                        <i class="fa-solid fa-arrow-right fa-lg me-3 fa-fw"></i>
+                        <div class="flex-fill mb-0">
+                            <p><strong>Model:</strong> <span class="box-content">{{ product.model }}</span></p>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-row align-items-center mb-4">
+                        <i class="fa-solid fa-wrench fa-lg me-3 fa-fw"></i>
+                        <div class="flex-fill mb-0">
+                            <p><strong>Problem:</strong> <span class="box-content">{{ product.problem }}</span></p>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-row align-items-center mb-4">
+                        <i class="fa-solid fa-wrench fa-lg me-3 fa-fw"></i>
+                        <div class="flex-fill mb-0">
+                            <p><strong>Remark:</strong> <span class="box-content">{{ product.remark }}</span></p>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-row align-items-center mb-4">
+                        <i class="fa-solid fa-calendar-days fa-lg me-3 fa-fw"></i>
+                        <div class="flex-fill mb-0">
+                            <p><strong>Date of Inward:</strong> <span class="box-content bg-warning text-white">{{ product.inwardDate }}</span></p>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-row align-items-center mb-4">
+                        <i class="fa-solid fa-calendar-days fa-lg me-3 fa-fw"></i>
+                        <div class="flex-fill mb-0">
+                            <p><strong>Date of Commitment:</strong> <span class="box-content bg-info text-white">{{ product.commitmentDate }}</span></p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Customer Details -->
+                <div class="col-lg-7">
+                    <p class="text-center h4 fw-bold mb-4 mx-1 mx-md-4 mt-4">Customer Details</p>
+                    <div class="d-flex flex-row align-items-center mb-4">
+                        <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+                        <div class="flex-fill mb-0">
+                            <p><strong>Customer Name:</strong> <span class="box-content">{{ product.customer.customerName }}</span></p>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-row align-items-center mb-4">
+                        <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
+                        <div class="flex-fill mb-0">
+                            <p><strong>Customer Email:</strong> <span class="box-content">{{ product.customer.customerEmail }}</span></p>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-row align-items-center mb-4">
+                        <i class="fas fa-phone fa-lg me-3 fa-fw"></i>
+                        <div class="flex-fill mb-0">
+                            <p><strong>Customer Mobile No:</strong> <span class="box-content">{{ product.customer.customerMobNo }}</span></p>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-row align-items-center mb-4">
+                        <i class="fas fa-map-marker-alt fa-lg me-3 fa-fw"></i>
+                        <div class="flex-fill mb-0">
+                            <p><strong>Customer Address:</strong> <span class="box-content">{{ product.customer.customerAddress }}</span></p>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-row align-items-center mb-4">
+                        <i class="fa-solid fa-screwdriver-wrench fa-lg me-3 fa-fw"></i>
+                        <div class="flex-fill mb-0">
+                            <p><strong>Product Status:</strong> <span class="box-content 
+                            {% if product.productStatus == 'Inwarded' %}
+                                bg-warning text-white
+                            {% elif product.productStatus == 'In Service' %}
+                                bg-info text-white
+                            {% else %}
+                                bg-success text-white
+                            {% endif %} ">{{ product.productStatus }}</span></p>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-row align-items-center mb-4">
+                        <i class="fa-solid fa-check fa-lg me-3 fa-fw"></i>
+                        <div class="flex-fill mb-0">
+                            <p><strong>Product Checked:</strong> <span class="box-content 
+                            {% if product.productChecked == True %}
+                                bg-success text-white
+                            {% else %}
+                                bg-danger text-white
+                            {% endif %}">{{ product.productChecked | yesno:"Yes,No" }}</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-center align-items-center">
+                <a class="btn btn-sm btn-secondary text-white mx-2" href="{% url 'inwardHistory' %}" style="font-size: 1.2rem;">Inward History</a>
+                
+                {% if  not product.productStatus == 'Delivered' %}    
+                <a class="btn btn-sm btn-dark text-white mx-2" href="{% url 'inwardEdit' pid=product.id %}" style="font-size: 1.2rem;">Edit Details</a>
+                <a class="btn btn-sm btn-warning text-white mx-2" href="{% url 'service' pid=product.id %}" style="font-size: 1.2rem;">Add to Service</a>
+                {% endif %}
+            </div>
+            <div class="d-flex justify-content-center align-items-center">
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock body %}

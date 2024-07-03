@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+    
+    <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title>Tech Sumit -{% block title %}{% endblock title %}</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <!-- Google Fonts Roboto -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" />
+    <!-- MDB -->
+    <link rel="stylesheet" href="{% static 'css/mdb.min.css' %}" />
+
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <!-- Script to track window activity -->
+    <script src="{% static 'javascript/activity_tracker.js' %}"></script>
+</head>
+
+<body>
+    {% url 'dashboard' as dashboard %}
+    {% url 'inward' as inward %}
+    {% url 'inwardHistory' as inwardHistory %}
+    {% url 'Service' as Service %}
+    {% url 'serviceHistory' as serviceHistory %}
+    {% url 'deliveryHistory' as deliveryHistory %}
+    {% url 'team' as team %}
+
+    <header class="header">
+        {% if user.is_authenticated %}
+        <nav class="navbar navbar-expand-lg navbar-light bg-body-tertiary">
+            <div class="container-fluid">
+                <button data-mdb-collapse-init class="navbar-toggler" type="button"
+                    data-mdb-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <a class="navbar-brand mt-2 mt-lg-0" href="{% url 'dashboard' %}">
+                        <img src="{% static 'images/Tech Sumit-logo.png' %}" width="80px" alt="MDB Logo" loading="lazy" />
+                    </a>
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 w-100 d-flex justify-content-center">
+                        <li class="nav-item">
+                            <a class="px-3 py-2 mx-2 rounded-pill {% if request.path == dashboard %}active{% endif %}" href="{% url 'dashboard' %}">Dashboard</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="px-3 py-2 mx-2 rounded-pill {% if request.path == inward %}active{% endif %}" href="{% url 'inward' %}">Product Inward</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="px-3 py-2 mx-2 rounded-pill {% if request.path == inwardHistory %}active{% endif %}" href="{% url 'inwardHistory' %}">Inward History</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="px-3 py-2 mx-2 rounded-pill {% if request.path == serviceHistory %}active{% endif %}" href="{% url 'serviceHistory' %}">Service History</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="px-3 py-2 mx-2 rounded-pill {% if request.path == deliveryHistory %}active{% endif %}" href="{% url 'deliveryHistory' %}">Delivery History</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="px-3 py-2 mx-2 rounded-pill {% if request.path == team %}active{% endif %}" href="{% url 'team' %}">Team</a>
+                        </li>
+                    </ul>
+
+                    <!-- Left links -->
+                </div>
+                <!-- Collapsible wrapper -->
+
+                <!-- Right elements -->
+                <div class="d-flex align-items-center">
+                    <!-- Notifications -->
+                    <div class="dropdown">
+                        <a data-mdb-dropdown-init class="text-reset me-3 dropdown-toggle hidden-arrow" href="#"
+                            id="navbarDropdownMenuLink" role="button" aria-expanded="false">
+                            <i class="fas fa-bell" style="font-size: 30px;"></i>
+                            <span class="badge rounded-pill badge-notification bg-danger">1</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
+                            <li>
+                                <a class="dropdown-item" href="#">Some news</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="#">Another news</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- Profile img -->
+                    
+                    <div class="dropdown ms-4">
+                        <a data-mdb-dropdown-init class="dropdown-toggle d-flex align-items-center hidden-arrow"
+                            href="#" id="navbarDropdownMenuAvatar" role="button" aria-expanded="false">
+                            <img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" class="rounded-circle"
+                                width="50px" alt="Black and White Portrait of a Man" loading="lazy" />
+                        </a>
+                        
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuAvatar">
+                            <li>
+                                <a class="dropdown-item" href="#">My profile</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="#">Settings</a>
+                            </li>
+                            
+                            <li>
+                                <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        {% endif %}
+        <!-- Navbar -->
+    </header>
+    <!-- Start your project here-->
+    {% block body %}
+
+    {% endblock body %}
+    <!-- End your project here-->
+
+    <!-- MDB -->
+    {% block script %}
+    <script type="text/javascript" src="{% static 'javascript/mdb.umd.min.js' %}"></script>
+    <!-- Custom scripts -->
+    <script type="text/javascript"></script>
+
+    <!-- Main Script link -->
+    <script src="{% static 'javascript/main.js' %}"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    {% endblock script %}
+
+    
+{% block sweet_alert %}
+<script>
+    {% for message in messages %}
+    {% if message.tags == 'error' %}
+    Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "{{message}}",
+        footer: '<a href="{% url 'login' %}">Try Again</a>'
+    });
+    {% elif message.tags == 'success' %}
+    Swal.fire({
+        icon: "success",
+        title: "{{message}}",
+        showConfirmButton: false,
+        timer: 3000
+    });
+    {% elif message.tags == 'info' %}
+    Swal.fire({
+        icon: "info",
+        title: "{{message}}",
+        timer: 2500
+    });
+    {% endif %}
+    {% endfor %}
+    
+</script>
+{% endblock sweet_alert %}
+        
+
+</body>
+
+</html>
