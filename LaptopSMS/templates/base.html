@@ -94,17 +94,14 @@
                     
                     <div class="dropdown ms-4">
                         <a data-mdb-dropdown-init class="dropdown-toggle d-flex align-items-center hidden-arrow"
-                            href="#" id="navbarDropdownMenuAvatar" role="button" aria-expanded="false">
-                            <img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" class="rounded-circle"
-                                width="50px" alt="Black and White Portrait of a Man" loading="lazy" />
-                        </a>
-                        
+                        href="#" id="navbarDropdownMenuAvatar" role="button" aria-expanded="false">
+                        <img src="{% if request.user.profile.profile_img %}{{ request.user.profile.profile_img.url }}{% else %}{% static 'images/profile-placeholder.jpg' %}{% endif %}" class="rounded-circle" width="50px"  alt="Profile Picture"  loading="lazy" /></a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuAvatar">
                             <li>
-                                <a class="dropdown-item" href="#">My profile</a>
+                                <a class="dropdown-item" href="{% url 'profile' %}">My profile</a>
                             </li>
                             <li>
-                                <a class="dropdown-item" href="#">Settings</a>
+                                <a class="dropdown-item" href="{% url 'profile_update' user.id %}">Settings</a>
                             </li>
                             
                             <li>

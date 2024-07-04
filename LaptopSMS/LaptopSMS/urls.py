@@ -17,12 +17,16 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from mainapp import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('dashboard', views.dashboard, name='dashboard'),
     path('', views.login, name='login'),
     path('signup/', views.signup, name='signup'),
+    path('profile/update/<int:uid>/', views.profileUpdate, name='profile_update'),
+    path('profile/', views.profile, name= 'profile'),
     path('service/<int:pid>/', views.service, name='service'),
     path('serviceHistory/', views.serviceHistory, name='serviceHistory'),
     path('inward/', views.inward, name='inward'),
@@ -31,7 +35,7 @@ urlpatterns = [
     path('inwardHistory/', views.inwardHistory, name='inwardHistory'),
     path('serviceDetails/<int:sid>', views.serviceDetails, name='serviceDetails'),
     path('logout/', views.logout, name='logout'),
-    path('keep-alive/', views.keep_alive, name='keep_alive'),
+    path('keep-alive/', views.keep_alive, name='keep_alive'), 
     path('delivery/<int:did>', views.delivery, name='delivery'),
     path('team/', views.team, name='team'),
     path('team/<int:eid>/', views.team, name='team'),
@@ -39,4 +43,8 @@ urlpatterns = [
     path('activate_employee/<int:eid>/', views.activate_employee, name='activate_employee'),
     path('deliveryHistory/', views.deliveryHistory, name="deliveryHistory"),
     path('delivery/<int:did>/', views.delivery_details, name='delivery_details'),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

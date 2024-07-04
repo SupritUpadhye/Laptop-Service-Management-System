@@ -140,6 +140,31 @@ def login(request):
     return render(request, 'login.html')
 
 @login_required
+def profile(request):
+    return render(request, 'profile.html')
+
+@login_required
+def profileUpdate(request, uid):
+    user = get_object_or_404(User, id=uid)
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        profile_img = request.FILES.get('profile_img') 
+
+        user.first_name = name
+        user.email = email
+        
+        if profile_img:
+            user.profile_img = profile_img
+            print("image updated")
+        user.save()
+
+        messages.success(request, 'Your profile has been updated successfully!')
+        return redirect('profile')
+
+    return render(request, 'updateProfile.html', {'user': request.user})
+
+@login_required
 def keep_alive(request):
     request.session['last_activity'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")
     return JsonResponse({'status': 'alive'})
@@ -445,7 +470,7 @@ def deliveryHistory(request):
         'deliveries': deliveries
     }
     
-    return render(request, 'deliveryHistory.html', context)
+    return render(request, 'deliveryHistory.html', )
 
 
 def delivery_details(request, did):

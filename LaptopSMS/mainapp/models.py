@@ -4,12 +4,16 @@ import random
 import string
 
 
+from django.contrib.auth.models import AbstractUser
+from django.db import models
+
 class User(AbstractUser):
     terms_accepted = models.BooleanField(default=False)
-    profile_img = models.ImageField(upload_to='profile_pics/', blank=True, null=True, default='profile_pics/default.jpg')  
+    profile_img = models.ImageField(upload_to='profile_pics/', null=True, blank=True)
     
     def __str__(self):
         return self.username
+
     
 class Customer(models.Model):
     customerName = models.CharField(max_length=100)
