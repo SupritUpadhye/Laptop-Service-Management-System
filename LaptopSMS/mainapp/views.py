@@ -10,6 +10,7 @@ from django.db.models import Sum
 from django.utils.timezone import now
 from datetime import timedelta, date
 from django.db.models import Avg
+from decimal import Decimal
 
 @login_required
 def dashboard(request):
@@ -58,11 +59,12 @@ def dashboard(request):
                 
             if start_of_month <= revenue.serviceDate <= today:
                 monthly_revenue += revenue.serviceCost    
+            
+    Revenue.objects.update_or_create(
+        date=today,
+        defaults={'daily_revenue': daily_revenue, 'monthly_revenue': monthly_revenue}
+    )
                 
-    # calculate Average Delivery Time
-    
-    
-    
     context = {
         'product_inward_count': product_inward_count,
         'pendingService_count':pendingService_count,
@@ -116,7 +118,7 @@ def signup(request):
                         terms_accepted=terms_accepted
                     )
                     user.save()
-                    messages.success(request, 'Signup Successful..Please login and Enjoy Shopping')
+                    messages.success(request, 'Signup Successful..Please login')
                     return redirect('login')
             except Exception as e:
                 messages.error(request, "Please Enter Valid Credentials")
@@ -269,7 +271,7 @@ def inward(request):
         remark = request.POST.get('remark')
         commitmentDate = request.POST.get('commitmentDate')
         productStatus = request.POST.get('productStatus')
-        productChecked = request.POST.get('productChecked') == 'on'
+        productChecked = request.POST.get('productChecked', 'off') == 'on'
         
         customerName = request.POST.get('customerName')
         customerEmail = request.POST.get('customerEmail')
@@ -470,7 +472,7 @@ def deliveryHistory(request):
         'deliveries': deliveries
     }
     
-    return render(request, 'deliveryHistory.html', )
+    return render(request, 'deliveryHistory.html', context)
 
 
 def delivery_details(request, did):
@@ -480,3 +482,42 @@ def delivery_details(request, did):
     }
     return render(request, 'deliveryDetails.html', context)
 
+# views.py
+
+from django.shortcuts import render
+from django.utils.timezone import now
+from .models import Revenue
+from django.db.models.functions import ExtractMonth, ExtractYear
+
+@login_required
+def revenueData(request):
+    # Get the current year and month
+    current_year = now().year
+    current_month = now().month
+    
+    # Get year and month from request parameters, default to current year and month
+    selected_year = int(request.GET.get('year', current_year))
+    selected_month = int(request.GET.get('month', current_month))
+    
+    # Filter revenues by selected year and month
+    revenues = Revenue.objects.annotate(
+        year=ExtractYear('date'),
+        month=ExtractMonth('date')
+    ).filter(year=selected_year, month=selected_month)
+    
+    # Calculate total monthly revenue
+    total_monthly_revenue = revenues.aggregate(total=models.Sum('daily_revenue'))['total'] or 0
+    
+    # Get list of years and months for the filter dropdowns
+    years = Revenue.objects.dates('date', 'year')
+    months = Revenue.objects.dates('date', 'month')
+    
+    context = {
+        'revenues': revenues,
+        'total_monthly_revenue': total_monthly_revenue,
+        'years': years,
+        'months': months,
+        'selected_year': selected_year,
+        'selected_month': selected_month,
+    }
+    return render(request, 'revenueData.html', context)

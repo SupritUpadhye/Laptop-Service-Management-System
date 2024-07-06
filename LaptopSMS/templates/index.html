@@ -4,6 +4,7 @@
 {% block body %}
 <section class="dashboard">
     <div class="container-fluid p-5">
+        <strong class="border rounded-pill shadow-lg p-2 m-0" id="date-time"></strong>
         <p class="text-center h1 fw-bold mb-4 mx-1 mx-md-4 mt-4">Service Center Dashboard</p>
         
         <div class="row">
@@ -108,7 +109,7 @@
                 <div class="card text-center shadow-sm">
                     <div class="card-body border border-info border-4">
                         <h5 class="card-title fw-bold">Daily Revenue</h5>
-                        <p class="card-text display-4">Rs. {{daily_revenue}}</p>
+                        <p class="card-text display-4">Rs. {{ daily_revenue  }}</p>
                     </div>
                 </div>
             </div>
@@ -120,6 +121,10 @@
                     </div>
                 </div>
             </div>
+            <div class="col-lg-6 m-0 p-0"></div>    
+            <div class="col-lg-6 d-flex justify-content-center align-items-center m-0 p-0">
+                <a href="{% url 'revenueData' %}" class="btn main-btn btn-primary rounded-5">Revenue Details</a>
+            </div>        
         </div>
             <div class="col-lg-6 col-md-12 mb-4">
                 <div class="card shadow-sm">
@@ -135,5 +140,17 @@
         </div>
     </div>
 </section>
+
+<script>
+    function updateDateTime() {
+        var now = new Date();
+        var date = now.toLocaleDateString();
+        var time = now.toLocaleTimeString();
+        document.getElementById('date-time').textContent = date + ' ' + time;
+    }
+
+    setInterval(updateDateTime, 1000); 
+    updateDateTime(); 
+</script>
 {% endblock body %}
     

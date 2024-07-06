@@ -110,3 +110,8 @@ class Delivery(models.Model):
         ('No', 'No'),
     ], null=True, blank=True)
     
+# Revenue Data
+class Revenue(models.Model):
+    date = models.DateField()
+    daily_revenue = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    monthly_revenue = models.DecimalField(max_digits=10, decimal_places=2, default=0)
